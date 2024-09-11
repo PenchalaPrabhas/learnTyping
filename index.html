@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Type A to Z</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      margin: 0;
+    }
+    #content {
+      max-height: 50vh;
+      overflow-y: auto;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    .line {
+      margin-bottom: 10px;
+    }
+    .wrong {
+      color: red;
+    }
+    #typingArea {
+      border: none;
+      background-color: transparent;
+      color: white;
+      font-size: 24px;
+      outline: none;
+      width: 500px;
+      text-align: center;
+    }
+    /* Alternating between light green and white for correct text */
+    .correct {
+      animation: correctColorChange 2s infinite;
+    }
+    @keyframes correctColorChange {
+      0% { color: lightgreen; }
+      50% { color: white; }
+      100% { color: lightgreen; }
+    }
+
+    /* Button styles */
+    .button {
+      margin: 10px;
+      height: auto;
+      background: transparent;
+      padding: 0;
+      border: none;
+      cursor: pointer;
+      --border-right: 6px;
+      --text-stroke-color: rgba(255,255,255,0.6);
+      --animation-color: #37FF8B;
+      --fs-size: 2em;
+      letter-spacing: 3px;
+      text-decoration: none;
+      font-size: var(--fs-size);
+      font-family: "Arial";
+      position: relative;
+      text-transform: uppercase;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--text-stroke-color);
+    }
+    .hover-text {
+      position: absolute;
+      box-sizing: border-box;
+      content: attr(data-text);
+      color: var(--animation-color);
+      width: 0%;
+      inset: 0;
+      border-right: var(--border-right) solid var(--animation-color);
+      overflow: hidden;
+      transition: 0.5s;
+      -webkit-text-stroke: 1px var(--animation-color);
+    }
+    .button:hover .hover-text {
+      width: 100%;
+      filter: drop-shadow(0 0 23px var(--animation-color));
+    }
+  </style>
+</head>
+<body>
+
+  <div id="content"></div>
+
+  <input id="typingArea" type="text" maxlength="30" placeholder="Type A to Z" autofocus>
+  <button class="button" onclick="toggleCase()" data-text="Uppercase">
+    <span class="actual-text">&nbsp;Lower_case&nbsp;</span>
+    <span aria-hidden="true" class="hover-text">&nbsp;Lower_case&nbsp;</span>
+  </button>
+  
+  <script>
+    let correctText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ,./';
+    let isUpperCase = true;
+    let startTime, endTime;
+    const typingArea = document.getElementById('typingArea');
+    const contentDiv = document.getElementById('content');
+    const button = document.querySelector('.button');
+
+    // Start the timer when the user starts typing
+    typingArea.addEventListener('input', () => {
+      if (!startTime) {
+        startTime = new Date();
+      }
+    });
+
+    typingArea.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const typedValue = typingArea.value;
+
+        // End the timer when user presses Enter
+        endTime = new Date();
+        const timeDiff = ((endTime - startTime) / 1000).toFixed(2); // Time in seconds
+        startTime = null; // Reset timer for the next input
+
+        const line = document.createElement('div');
+        line.classList.add('line');
+
+        for (let i = 0; i < typedValue.length; i++) {
+          const span = document.createElement('span');
+          span.textContent = typedValue[i];
+
+          if (typedValue[i] !== correctText[i] && isUpperCase) {
+            span.classList.add('wrong');
+          } else if (typedValue[i].toLowerCase() !== correctText[i].toLowerCase() && !isUpperCase) {
+            span.classList.add('wrong');
+          } else {
+            span.classList.add('correct'); // Apply correct style with alternating color
+          }
+
+          line.appendChild(span);
+        }
+
+        const timeSpan = document.createElement('span');
+        timeSpan.textContent = ` - Time: ${timeDiff} seconds`;
+        line.appendChild(timeSpan);
+
+        contentDiv.appendChild(line);
+        typingArea.value = ''; // Clear the input field
+
+        // Auto scroll to the bottom of the content
+        contentDiv.scrollTop = contentDiv.scrollHeight;
+      }
+    });
+
+    function toggleCase() {
+      if (isUpperCase) {
+        isUpperCase = false;
+        correctText = 'abcdefghijklmnopqrstuvwxyz,./';
+        typingArea.placeholder = 'Type a to z';
+        button.innerHTML = `<span class="actual-text">&nbsp;Upper_case&nbsp;</span><span aria-hidden="true" class="hover-text">&nbsp;Upper_case&nbsp;</span>`;
+      } else {
+        isUpperCase = true;
+        correctText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ,./';
+        typingArea.placeholder = 'Type A to Z';
+        button.innerHTML = `<span class="actual-text">&nbsp;Lower_case&nbsp;</span><span aria-hidden="true" class="hover-text">&nbsp;Lower_case&nbsp;</span>`;
+      }
+    }
+  </script>
+
+</body>
+</html>
