@@ -92,14 +92,14 @@
 
   <div id="content"></div>
 
-  <input id="typingArea" type="text" maxlength="26" placeholder="Type A to Z" autofocus>
+  <input id="typingArea" type="text" maxlength="30" placeholder="Type A to Z" autofocus>
   <button class="button" onclick="toggleCase()" data-text="Uppercase">
     <span class="actual-text">&nbsp;Lower_case&nbsp;</span>
     <span aria-hidden="true" class="hover-text">&nbsp;Lower_case&nbsp;</span>
   </button>
   
   <script>
-    let correctText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let correctText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ,./';
     let isUpperCase = true;
     let startTime, endTime;
     const typingArea = document.getElementById('typingArea');
@@ -155,12 +155,12 @@
     function toggleCase() {
       if (isUpperCase) {
         isUpperCase = false;
-        correctText = 'abcdefghijklmnopqrstuvwxyz';
+        correctText = 'abcdefghijklmnopqrstuvwxyz,./';
         typingArea.placeholder = 'Type a to z';
         button.innerHTML = `<span class="actual-text">&nbsp;Upper_case&nbsp;</span><span aria-hidden="true" class="hover-text">&nbsp;Upper_case&nbsp;</span>`;
       } else {
         isUpperCase = true;
-        correctText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        correctText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ,./';
         typingArea.placeholder = 'Type A to Z';
         button.innerHTML = `<span class="actual-text">&nbsp;Lower_case&nbsp;</span><span aria-hidden="true" class="hover-text">&nbsp;Lower_case&nbsp;</span>`;
       }
