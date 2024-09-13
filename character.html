@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Character Typing with Timer</title>
+    <style>
+        body {
+            background-color: black;
+            color: grey; /* Changed from white to grey for default text */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .container {
+            font-size: 24px;
+        }
+        .character {
+            font-size: 50px;
+            margin: 20px;
+            padding: 10px;
+            transition: color 0.5s;
+            display: inline-block;
+            color: white; /* Character color remains white */
+        }
+        .info {
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #000;
+            color: grey; /* Changed from white to grey */
+            cursor: pointer;
+            font-weight: 900;
+            border-radius: 99rem;
+            padding: 0.8rem 3rem;
+            margin-top: 20px;
+        }
+        .timer {
+            font-size: 20px;
+            margin-top: 10px;
+            color: grey; /* Changed from yellow to grey */
+        }
+        .current-time {
+            font-size: 16px;
+            color: grey; /* Changed from lightgray to grey */
+        }
+
+        /* From Uiverse.io by hamoode-taha-04 */
+        .ui-btn {
+            cursor: pointer;
+            border-radius: 5px;
+            color: grey; /* Button text color */
+            border-style: solid;
+            background-color: transparent;
+            border-color: grey; /* Button border color */
+            width: 120px;
+            height: 40px;
+            transition: 0.2s ease;
+            text-transform: uppercase;
+            border-width: 2px;
+            font-weight: 500;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .ui-btn:hover {
+            color: grey; /* Hover state text color */
+            background-color: rgb(42, 145, 73);
+            border-color: rgb(42, 145, 73);
+            text-shadow: 0 0 50px white, 0 0 20px white, 0 0 15px white;
+            box-shadow: 0 0 50px rgb(42, 145, 73), 0 0 30px rgb(42, 145, 73),
+                        0 0 60px rgb(42, 145, 73), 0 0 120px rgb(42, 145, 73);
+            font-size: 20px;
+            width: 130px;
+            height: 50px;
+            letter-spacing: 3px;
+        }
+
+        .ui-btn:active {
+            width: 115px;
+            height: 38px;
+            letter-spacing: 0px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="character" id="randomChar"></div>
+    <div class="info">
+        <p>Characters Per Minute (CPM): <span id="cpm">0</span></p>
+        <p>Total Correct Characters: <span id="totalChars">0</span></p>
+        <p>Total Wrong Characters: <span id="wrongChars">0</span></p>
+    </div>
+    <button class="button" id="pauseBtn">Pause</button>
+    <div class="timer" id="typingTimer">Timer: 00:00:00</div>
+    <div class="current-time">
+        Current Time: <span id="currentTime"></span>
+    </div>
+
+    <!-- Redirect Button using hamoode-taha-04 CSS -->
+    <button class="ui-btn" id="redirectBtn">Home</button>
+</div>
+
+<script>
+    const characters = "abcdefghijklmnopqrstuvwxyz,./";
+    let totalCharacters = 0;
+    let correctCharacters = 0;
+    let wrongCharacters = 0;
+    let typingStartTime;
+    let paused = false;
+    let typingStarted = false;
+    let pausedTime = 0;
+    let totalPausedTime = 0;
+
+    function getRandomCharacter() {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        return characters[randomIndex];
+    }
+
+    function updateCharacter() {
+        const randomChar = getRandomCharacter();
+        document.getElementById("randomChar").textContent = randomChar;
+    }
+
+    function updateTime() {
+        const currentTime = new Date();
+        const timeString = currentTime.toLocaleTimeString();
+        document.getElementById("currentTime").textContent = timeString;
+    }
+
+    function calculateCPM() {
+        const currentTime = new Date();
+        const timeElapsed = (currentTime - typingStartTime - totalPausedTime) / 1000 / 60; // in minutes
+        const cpm = Math.round(correctCharacters / timeElapsed);
+        document.getElementById("cpm").textContent = isNaN(cpm) ? 0 : cpm;
+    }
+
+    function startTypingTimer() {
+        if (!typingStarted) {
+            typingStarted = true;
+            typingStartTime = new Date();
+            setInterval(updateTypingTimer, 1000);
+        }
+    }
+
+    function updateTypingTimer() {
+        if (!paused && typingStarted) {
+            const currentTime = new Date();
+            const timeElapsed = new Date(currentTime - typingStartTime - totalPausedTime);
+            const hours = String(timeElapsed.getUTCHours()).padStart(2, '0');
+            const minutes = String(timeElapsed.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(timeElapsed.getUTCSeconds()).padStart(2, '0');
+            document.getElementById("typingTimer").textContent = `Timer: ${hours}:${minutes}:${seconds}`;
+        }
+    }
+
+    function keyPressHandler(event) {
+        if (paused) return;
+
+        const typedChar = String.fromCharCode(event.which).toLowerCase();
+        const displayedChar = document.getElementById("randomChar").textContent;
+
+        if (!typingStarted) {
+            startTypingTimer();
+        }
+
+        totalCharacters++;
+
+        if (typedChar === displayedChar) {
+            correctCharacters++;
+            document.getElementById("totalChars").textContent = correctCharacters;
+            calculateCPM();
+            updateCharacter();
+        } else {
+            wrongCharacters++;
+            document.getElementById("wrongChars").textContent = wrongCharacters;
+        }
+    }
+
+    // Pause/Resume Button functionality
+    document.getElementById("pauseBtn").addEventListener("click", function() {
+        paused = !paused;
+        if (paused) {
+            document.getElementById("randomChar").textContent = ""; // Clear character display
+            pausedTime = new Date();
+            this.textContent = "Resume";
+        } else {
+            totalPausedTime += new Date() - pausedTime;
+            updateCharacter(); // Show character again
+            this.textContent = "Pause";
+        }
+    });
+
+    // Redirect Button to go to index.html
+    document.getElementById("redirectBtn").addEventListener("click", function() {
+        window.location.href = "index.html"; // Redirect to index.html
+    });
+
+    // Update random character and time initially
+    updateCharacter();
+    updateTime();
+
+    // Update time every second
+    setInterval(updateTime, 1000);
+
+    // Listen for key press to count total characters
+    document.addEventListener("keypress", keyPressHandler);
+</script>
+
+</body>
+</html>
