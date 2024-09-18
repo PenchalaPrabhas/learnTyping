@@ -1,0 +1,100 @@
+/* Set the entire page background to black */
+body, html {
+  height: 100%;
+  margin: 0;
+  background-color: black; /* Black background */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align to 1/4th height */
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.paste-button {
+  position: absolute;
+  top: 25%; /* 1/4th of the height from the top */
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+  display: block;
+}
+
+.button {
+  background-color: #ADD8E6; /* Light blue button background */
+  color: black; /* Black text */
+  padding: 10px 30px; /* Adjust padding for more length */
+  font-size: 15px;
+  font-weight: bold;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  cursor: pointer;
+  width: 200px; /* Define a fixed width to increase button length */
+  text-align: center; /* Ensure text is centered */
+  transition: all 0.3s ease; /* Smooth transitions for hover effects */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+.button:hover {
+  background-color: #87CEEB; /* Change background on hover */
+  color: white; /* White text on hover */
+  border: 2px solid #ADD8E6; /* Add border on hover */
+  box-shadow: 0 0 15px #ADD8E6; /* Glowing effect on hover */
+  transform: translateY(-5px); /* Slight lift on hover */
+}
+
+.button:active {
+  transform: translateY(0); /* Pressed button effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Return to normal shadow */
+}
+
+.button:focus {
+  outline: none; /* Remove default focus outline */
+  border: 2px solid #87CEEB; /* Light blue border on focus */
+  box-shadow: 0 0 10px #ADD8E6; /* Glowing effect when focused */
+}
+
+/* Dropdown menu styling */
+.dropdown-content {
+  display: none;
+  font-size: 13px;
+  position: absolute;
+  z-index: 1;
+  min-width: 200px;
+  background-color: black; /* Black dropdown background */
+  border: 2px solid #ADD8E6; /* Light blue border */
+  border-radius: 0px 15px 15px 15px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s ease; /* Smooth opening */
+  opacity: 0;
+}
+
+.paste-button:hover .dropdown-content {
+  display: block;
+  opacity: 1;
+}
+
+/* Dropdown menu links */
+.dropdown-content a {
+  color: #ADD8E6; /* Light blue text */
+  padding: 8px 10px;
+  text-decoration: none;
+  display: block;
+  transition: 0.3s ease;
+  filter: brightness(105%); /* Slight brightness */
+}
+
+.dropdown-content a:hover {
+  background-color: #ADD8E6; /* Light blue background on hover */
+  color: black; /* Black text on hover */
+  filter: brightness(120%); /* Brightness effect on hover */
+  box-shadow: 0 0 5px #ADD8E6, 0 0 10px #ADD8E6; /* Subtle glow */
+}
+
+.dropdown-content a:focus {
+  background-color: black;
+  color: #ADD8E6;
+}
+
+/* Additional button hover effect */
+.paste-button:hover button {
+  border-radius: 15px 15px 0px 0px;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Loading</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            background-color: black;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .message-container {
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #FF6347; /* Tomato color for error */
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #ADD8E6; /* Light blue color for contact info */
+        }
+
+        p a {
+            color: #87CEEB;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+
+        .go-back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            color: white;
+            background-color: #FF6347; /* Tomato color for button */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .go-back-button:hover {
+            background-color: #FF4500; /* Darker shade of tomato for hover effect */
+        }
+    </style>
+</head>
+<body>
+    <div class="message-container">
+        <h1>Page is not loading</h1>
+        <p>Please contact the admin at <a href="mailto:penchalaprabhas@gmail.com">penchalaprabhas@gmail.com</a></p>
+        <button class="go-back-button" onclick="window.location.href='index.html';">Go Back</button>
+    </div>
+</body>
+</html>
