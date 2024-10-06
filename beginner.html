@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Beginner</title>
+    <link rel="icon" type="jpg" href="new.jpg">
+    <style>
+.typing-instructions {
+    max-width: 100%; /* Allow it to take the full width of its parent */
+    margin: 20px auto; /* Center the div with margin */
+    padding: 30px; /* Add padding for spacing */
+    background-color: #222; /* Background color to match your design */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Slight shadow for depth */
+    position: relative; /* Position relative to its normal position */
+    width: 100%; /* Full width to fit screen */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    overflow: auto; /* Add overflow to handle long content gracefully */
+}
+
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            background-color: black;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between; /* Space between columns */
+            align-items: flex-start;
+            padding-top: 30px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .button {
+            width: 200px; /* Fixed width for buttons */
+            height: 60px; /* Fixed height for buttons */
+            margin: 10px 0; /* Space between buttons */
+            background-color: #ADD8E6;
+            color: black;
+            border: none;
+            font-size: 24px; /* Increased text size */
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .button:hover {
+            background-color: #87CEEB;
+            color: white;
+            box-shadow: 0 0 10px #ADD8E6;
+            transform: translateY(-3px);
+        }
+
+        .button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .button:focus {
+            outline: none;
+            border: 2px solid #87CEEB;
+            box-shadow: 0 0 8px #ADD8E6;
+        }
+
+        .go-back-button {
+            background-color: #FF6347;
+            color: white;
+            width: 200px; /* Fixed width for go-back button */
+            height: 60px; /* Fixed height for go-back button */
+            align-self: flex-start; /* Align at the top */
+            margin: 10px; /* Space above and below */
+        }
+
+        .go-back-button:hover {
+            background-color: #FF4500;
+            box-shadow: 0 0 10px #FF6347;
+        }
+
+        .go-back-button:focus {
+            border: 2px solid #FF6347;
+            box-shadow: 0 0 8px #FF6347;
+        }
+
+.keys-display {
+    display: flex;
+    justify-content: center; /* Center keys horizontally */
+    align-items: flex-start; /* Align keys to the top */
+    font-size: 24px;
+    color: white;
+    margin-top: 30px; /* Space from the top */
+    flex-wrap: wrap; /* Allow wrapping of keys */
+}
+
+
+
+        .key {
+            margin: 0 5px;
+            padding: 10px 15px;
+            border: 2px solid #ADD8E6;
+            border-radius: 5px;
+            background-color: #333;
+            color: #ADD8E6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .key.active {
+            background-color: #87CEEB;
+            color: black;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .practice-text {
+            font-size: 36px; /* Increased size of practice text */
+            color: white;
+            margin-top: 20px;
+            text-align: center;
+            white-space: pre; /* Preserve whitespace */
+            display: none; /* Hidden initially */
+        }
+
+        .highlight {
+            background-color: #87CEEB;
+            color: black;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+   
+    </style>
+</head>
+<body>
+<div class="typing-instructions">
+    <h2 style="color: #1E90FF; text-align: center; text-decoration: underline;">Welcome to Your Typing Practice Journey!</h2>
+    <p style="color: white; text-align: left; padding-left: 100px;">
+        Typing is a fundamental skill in today’s digital world, and mastering it can greatly enhance your productivity. Our typing practice interface is designed to help you learn and improve your typing skills systematically. Below is an overview of the three rows of keys you’ll practice:
+    </p>
+    
+    <h3 style="color: #1E90FF; text-align: left; text-decoration: underline;">1. Home Row: The Foundation of Touch Typing</h3>
+    <p style="color: white; text-align: left; padding-left: 100px;">
+        The <strong>Home Row</strong> is your base for typing. It consists of the keys <strong>A, S, D, F, G, H, J, K, L, ;</strong>.
+    </p>
+    <ul style="color: white; text-align: left; padding-left: 100px;">
+        <li><strong>Purpose:</strong> This row is crucial because it positions your fingers correctly on the keyboard. Your left hand rests on <strong>A, S, D, F</strong>, while your right hand rests on <strong>H, J, K, L</strong>.</li>
+        <li><strong>Practice Tip:</strong> Start your typing practice here for at least one day. Familiarize yourself with the position of your fingers and try to maintain them on this row while typing.</li>
+    </ul>
+
+    <h3 style="color: #1E90FF; text-align: left; text-decoration: underline;">2. Top Row: Expanding Your Reach</h3>
+    <p style="color: white; text-align: left; padding-left: 100px;">
+        Once you are comfortable with the Home Row, it’s time to move to the <strong>Top Row</strong>, which includes <strong>Q, W, E, R, T, Y, U, I, O, P</strong>.
+    </p>
+    <ul style="color: white; text-align: left; padding-left: 100px;">
+        <li><strong>Purpose:</strong> This row adds additional letters and helps you transition to typing common words and phrases.</li>
+        <li><strong>Practice Tip:</strong> Dedicate a day or two to practicing this row. Use it in conjunction with the Home Row to build speed and confidence in your typing.</li>
+    </ul>
+
+    <h3 style="color: #1E90FF; text-align: left; text-decoration: underline;">3. Bottom Row: Mastery of the Keyboard</h3>
+    <p style="color: white; text-align: left; padding-left: 100px;">
+        The <strong>Bottom Row</strong> comprises <strong>Z, X, C, V, B, N, M, ,, ., /</strong>.
+    </p>
+    <ul style="color: white; text-align: left; padding-left: 100px;">
+        <li><strong>Purpose:</strong> This row introduces the last set of keys needed for full keyboard mastery, including punctuation.</li>
+        <li><strong>Practice Tip:</strong> Once you feel confident with the previous rows, spend time on this row to complete your understanding of the keyboard layout.</li>
+    </ul>
+
+    <h3 style="color: #1E90FF; text-align: left; text-decoration: underline;">Practicing Effectively</h3>
+    <p style="color: white; text-align: left; padding-left: 100px;">
+        To become proficient in typing, practice is essential. Here are some tips to maximize your practice sessions:
+    </p>
+    <ul style="color: white; text-align: left; padding-left: 100px;">
+        <li><strong>Repetition:</strong> Typing the same set of keys repeatedly helps solidify muscle memory.</li>
+        <li><strong>Slow and Steady:</strong> Focus on accuracy before speed. Once you can type without errors, gradually increase your speed.</li>
+        <li><strong>Utilize All Rows:</strong> Don’t skip rows; each one builds upon the last. Consistent practice across all rows is key to mastering touch typing.</li>
+        <li><strong>Use Practice Text:</strong> Our practice text feature allows you to type real sentences, helping you learn where the keys are located in context.</li>
+    </ul>
+
+    <h3 style="color: #1E90FF; text-align: left; text-decoration: underline;">Conclusion</h3>
+    <p style="color: white; text-align: left; padding-left: 100px;">
+        By following this structured approach to learning the keyboard, you’ll build a solid foundation in typing that will serve you well in your personal and professional life. Start with the Home Row today, and enjoy the journey to becoming a proficient typist!
+    </p>
+   
+
+    <!-- Blinking Text -->
+    <div class="blink-text">
+        Scroll to practice
+    </div>
+    <div style="text-align: center;">
+        <div style="display: inline-block; margin: 20px;">
+            <img src="keyboard1.jpg" alt="keyboard" style="width: 560px; border: 5px solid #ff6347;">
+            <h2 style="text-align: center; color: white;">Basic Typing Posture:
+                 <br/> position hands on keyboard</h2>
+        </div>
+        <div style="display: inline-block; margin: 20px;">
+            <img src="keyboard.jpg" alt="keyboard1" style="width: 500px; border: 5px solid #1e90ff;">
+            <h2 style="text-align: center; color: white;">Finger-to-Key Mapping:<br/>Which Finger Presses Which Key?</h2>
+        </div>
+    </div>
+    
+    
+    
+</div>
+
+
+<!-- CSS -->
+<style>
+    .blink-text {
+        color: #FF4500;
+        font-weight: bold;
+        font-size: 20px;
+        margin-top: 20px;
+        border: 2px solid #FF4500;
+        padding: 10px;
+        width: 100%;
+        text-align: center;
+        animation: blink 1s step-start infinite;
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: 0;
+        }
+    }
+</style>
+
+
+
+
+
+
+
+
+
+    <div class="container">
+        <div>
+            <button class="button" onclick="startTypingPractice('home')">Home Row</button>
+            <button class="button" onclick="startTypingPractice('top')">Top Row</button>
+            <button class="button" onclick="startTypingPractice('bottom')">Bottom Row</button>
+            <button class="button" onclick="startTypingPractice('practice')">Practice</button>
+        </div>
+    <div class="keys-display" id="keysDisplay"></div>
+    <div class="practice-text" id="practiceText"></div>
+<div>
+            <button class="button go-back-button" onclick="window.location.href='index.html';">Go Back</button>
+        </div>
+
+
+    </div>
+    
+
+
+    <script>
+        let currentKeyIndex = 0;
+        let currentKeys = [];
+        let practiceMode = false;
+        const practiceString = 'qazwsxedcrfvtgbyhnujmik,ol.p;/';
+
+        // Start typing practice with the selected row of keys
+        function startTypingPractice(row) {
+            currentKeyIndex = 0; // Reset index
+            practiceMode = (row === 'practice'); // Set practice mode
+            const keysDisplay = document.getElementById('keysDisplay');
+            const practiceTextDisplay = document.getElementById('practiceText');
+
+            if (practiceMode) {
+                keysDisplay.style.display = 'none'; // Hide keys display
+                practiceTextDisplay.style.display = 'block'; // Show practice text
+                displayPracticeText(); // Display the practice text
+                return;
+            } else {
+                keysDisplay.style.display = 'flex'; // Show keys display again
+                practiceTextDisplay.style.display = 'none'; // Hide practice text
+            }
+
+            switch (row) {
+                case 'home':
+                    currentKeys = 'ASDFGHJKL;'.split('');
+                    break;
+                case 'top':
+                    currentKeys = 'QWERTYUIOP'.split('');
+                    break;
+                case 'bottom':
+                    currentKeys = 'ZXCVBNM,./'.split('');
+                    break;
+                default:
+                    currentKeys = [];
+            }
+            displayKeys();
+            highlightNextKey(); // Highlight the first key if not in practice mode
+        }
+
+        // Display the keys on the screen
+        function displayKeys() {
+            const keysDisplay = document.getElementById('keysDisplay');
+            keysDisplay.innerHTML = '';
+            currentKeys.forEach((key, index) => {
+                const keyDiv = document.createElement('span');
+                keyDiv.className = 'key';
+                keyDiv.textContent = key;
+                keyDiv.setAttribute('data-index', index); // Set index to track position
+                keysDisplay.appendChild(keyDiv);
+            });
+        }
+
+        // Display practice text
+        function displayPracticeText() {
+            const practiceTextDisplay = document.getElementById('practiceText');
+            practiceTextDisplay.innerHTML = '';
+            practiceString.split('').forEach((char, index) => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.setAttribute('data-index', index);
+                practiceTextDisplay.appendChild(span);
+            });
+            highlightPracticeText(); // Highlight the first character
+        }
+
+        // Highlight the current character in the practice text
+        function highlightPracticeText() {
+            const practiceTextDisplay = document.getElementById('practiceText');
+            const spans = practiceTextDisplay.children;
+            for (let i = 0; i < spans.length; i++) {
+                spans[i].classList.remove('highlight'); // Remove highlight from all spans
+            }
+            if (currentKeyIndex < spans.length) {
+                spans[currentKeyIndex].classList.add('highlight'); // Highlight current character
+            }
+        }
+
+        // Highlight the next key in the sequence
+        function highlightNextKey() {
+            document.querySelectorAll('.key').forEach(key => key.classList.remove('active'));
+            if (currentKeyIndex < currentKeys.length) {
+                const currentKey = document.querySelector(`.key[data-index='${currentKeyIndex}']`);
+                if (currentKey) {
+                    currentKey.classList.add('active');
+                }
+            } else {
+                // Reset after completion to allow repeating the typing sequence
+                currentKeyIndex = 0;
+                highlightNextKey(); // Start blinking from the first key again
+            }
+        }
+
+        // Handle key press events
+        document.addEventListener('keydown', function(event) {
+            if (practiceMode) {
+                const expectedKey = practiceString[currentKeyIndex]?.toLowerCase();
+                if (event.key.toLowerCase() === expectedKey) {
+                    currentKeyIndex++; // Move to the next character in practice text
+                    highlightPracticeText(); // Highlight the next character
+                    if (currentKeyIndex >= practiceString.length) {
+                        // When finished, allow restarting the practice
+                        currentKeyIndex = 0;
+                        alert("You've completed the practice text! Type it again to continue.");
+                        highlightPracticeText(); // Restart highlighting
+                    }
+                }
+            } else {
+                const expectedKey = currentKeys[currentKeyIndex]?.toLowerCase();
+                if (event.key.toLowerCase() === expectedKey) {
+                    currentKeyIndex++; // Move to the next key in sequence
+                    highlightNextKey(); // Highlight the next key
+                }
+            }
+        });
+    </script>
+</body>
+</html>

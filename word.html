@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing words</title>
+    <link rel="icon" type="jpg" href="new.jpg">
+    <style>
+        html, body {
+            overflow: hidden; /* Prevent scrolling on the entire page */
+            height: 100%; /* Ensure full height for centering */
+            margin: 0; /* Remove default margins */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #word-container {
+            display: flex;
+            justify-content: center;
+            font-size: 2em;
+            margin-bottom: 20px;
+            gap: 30px;
+        }
+
+        .word {
+            min-width: 100px;
+            color: white;
+            text-shadow: 0 0 10px white;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .incorrect {
+            color: red;
+            text-shadow: none;
+        }
+
+        #stats {
+            margin-top: 20px;
+        }
+
+        #timer {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        #homeBtn {
+            position: absolute; /* Positioning it in the top right */
+            top: 160px; /* Adjusted top position */
+            right: 160px; /* Adjusted right position */
+            cursor: pointer;
+            border-radius: 5px;
+            color: rgb(219, 218, 218);
+            border-style: solid;
+            background-color: transparent;
+            border-color: rgb(219, 218, 218);
+            width: 120px;
+            height: 40px;
+            transition: 0.2s ease;
+            text-transform: uppercase;
+            border-width: 2px;
+            font-weight: 500;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        #homeBtn:hover {
+            color: rgb(247, 247, 247);
+            background-color: rgb(202, 25, 25);
+            border-color: rgb(202, 25, 25);
+            text-shadow: 0 0 50px white, 0 0 20px white, 0 0 15px white;
+            box-shadow: 0 0 50px rgb(202, 25, 25), 0 0 30px rgb(202, 25, 25),
+                0 0 60px rgb(202, 25, 25), 0 0 120px rgb(202, 25, 25);
+            font-size: 20px;
+            width: 120px;
+            height: 40px;
+            letter-spacing: 3px;
+        }
+
+        #homeBtn:active {
+            width: 115px;
+            height: 38px;
+            letter-spacing: 0px;
+        }
+
+        #word-log {
+            margin-top: 20px;
+            max-height: 400px; /* Set a maximum height for scrolling */
+            overflow-y: auto; /* Enable vertical scrolling */
+            border: 1px solid #444; /* Optional: add border for visual separation */
+            padding: 10px; /* Optional: add padding */
+            text-align: left;
+            display: inline-block;
+            width: 80%; /* Center the container and adjust width as needed */
+        }
+
+        #word-log .log-entry {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr; /* Adjust column widths as needed */
+            gap: 10px;
+            padding: 5px;
+            border-bottom: 1px solid #444;
+        }
+
+        #word-log .log-entry:last-child {
+            border-bottom: none; /* Remove border from the last entry */
+        }
+
+        .log-word, .log-time, .log-duration {
+            padding: 0 10px;
+        }
+
+        .within-time {
+            color: lightgreen;
+        }
+
+        .exact-time {
+            color: orange;
+        }
+
+        .above-time {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div id="timer">Time: 00:00:00</div>
+
+<div id="word-container">
+    <span class="word" id="word1">Loading...</span>
+    <span class="word" id="word2">Loading...</span>
+    <span class="word" id="word3">Loading...</span>
+</div>
+
+<div id="stats">
+    <div>Words typed: <span id="word-count">0</span></div>
+    <div>WPM: <span id="wpm">0</span></div>
+</div>
+
+<button id="homeBtn" onclick="goBack()">Home</button><br>
+
+<div id="word-log">
+    <div class="log-entry">
+        <div class="log-word"><strong>Word</strong></div>
+        <div class="log-time"><strong>Time (start to end)</strong></div>
+        <div class="log-duration"><strong>Duration</strong></div>
+    </div>
+    <!-- Log entries will be added here by JavaScript -->
+</div>
+
+<script>
+    let words = [];
+    let wordIndex = 0;
+    let currentCharIndex = 0;
+    let correctCharacters = 0;
+    let wordCount = 0;
+    let startTime;
+    let elapsedTime = 0;
+    let typingTimer;
+    let typingActive = true;
+    let wordInProgress = true;
+    let isWordComplete = false;
+    let wordStartTime = 0; // Time when the word starts being typed
+    let wordEndTime = 0;   // Time when the word is completed
+
+    const wordContainer1 = document.getElementById('word1');
+    const wordContainer2 = document.getElementById('word2');
+    const wordContainer3 = document.getElementById('word3');
+    const wordCountDisplay = document.getElementById('word-count');
+    const wpmDisplay = document.getElementById('wpm');
+    const timerDisplay = document.getElementById('timer');
+    const wordLog = document.getElementById('word-log');  // Word log display
+
+    // Fetch random words from API
+    async function fetchWords() {
+        const response = await fetch('https://random-word-api.herokuapp.com/word?number=3');
+        const data = await response.json();
+        words.push(...data);
+        displayWords();
+    }
+
+    // Display the first three words
+    function displayWords() {
+        wordContainer1.innerText = words[0] || 'Loading...';
+        wordContainer2.innerText = words[1] || 'Loading...';
+        wordContainer3.innerText = words[2] || 'Loading...';
+    }
+
+    // Format time as hh:mm:ss
+    function formatTime(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    // Start the timer on the first key press
+    function startTimer() {
+        startTime = new Date();
+        typingTimer = setInterval(() => {
+            elapsedTime = Math.floor((new Date() - startTime) / 1000);  // Update elapsed time in seconds
+            timerDisplay.innerText = `Time: ${formatTime(elapsedTime)}`;
+        }, 1000);
+    }
+
+    // Stop the timer
+    function stopTimer() {
+        clearInterval(typingTimer);
+        typingActive = false;
+    }
+
+    // Calculate WPM
+    function calculateWPM() {
+        const timeDiff = elapsedTime / 60;  // time in minutes
+        return Math.round((wordCount / timeDiff));
+    }
+
+    // Handle key strokes
+    document.addEventListener('keydown', function(event) {
+        if (!startTime && typingActive) startTimer();  // Start timer on first key press
+
+        const currentWord = words[0];
+        const typedChar = event.key;
+
+        // Handle correct character typing
+        if (typedChar === currentWord[currentCharIndex]) {
+            correctCharacters++;
+            currentCharIndex++;
+
+            wordContainer1.innerHTML = '<span class="correct">' + currentWord.slice(0, currentCharIndex) + '</span>' + currentWord.slice(currentCharIndex);
+
+            // Check if the entire word is typed correctly
+            if (currentCharIndex === currentWord.length) {
+                isWordComplete = true;
+                wordEndTime = elapsedTime;  // Mark end time when word is completed
+            }
+        } else if (typedChar !== " ") {
+            // Handle incorrect character typing
+            wordInProgress = false;
+            wordContainer1.innerHTML = '<span class="correct">' + currentWord.slice(0, currentCharIndex) + '</span><span class="incorrect">' + currentWord[currentCharIndex] + '</span>' + currentWord.slice(currentCharIndex + 1);
+        }
+
+        // Move to the next word if the current word is complete
+        if (isWordComplete) {
+            // Log the current word typing details
+            logWord(currentWord);
+            wordCount++;
+            wordCountDisplay.innerText = wordCount;
+
+            // Move to the next word
+            words.shift(); // Remove the completed word
+            currentCharIndex = 0; // Reset character index for next word
+            wordInProgress = true; // Reset word progress state
+            isWordComplete = false; // Reset word completion state
+            wordStartTime = elapsedTime; // Mark start time for the new word
+            fetchWords();
+            displayWords();
+        }
+    });
+
+    // Go back to the previous page (or perform an action)
+    function goBack() {
+        // You can change this to navigate back or perform any action you need.
+        window.location.href = 'index.html'; // Replace with your home page
+    }
+
+    // Log word typing details
+    function logWord(currentWord) {
+        wordDuration = wordEndTime - wordStartTime;
+        let colorClass = "";
+
+        if (wordDuration < 3) {
+            colorClass = "within-time";  // Green for under 3 seconds
+        } else if (wordDuration === 3) {
+            colorClass = "exact-time";   // Orange for exactly 3 seconds
+        } else {
+            colorClass = "above-time";   // Red for over 3 seconds
+        }
+
+        const logEntry = document.createElement('div');
+        logEntry.classList.add('log-entry');
+        logEntry.innerHTML = `
+            <div class="log-word">${currentWord}</div>
+            <div class="log-time">(${formatTime(wordStartTime)} to ${formatTime(wordEndTime)})</div>
+            <div class="log-duration ${colorClass}">took ${wordDuration} seconds</div>
+        `;
+        wordLog.appendChild(logEntry);
+        wordLog.scrollTop = wordLog.scrollHeight; // Scroll to the bottom
+    }
+
+    // Initial fetch of words
+    fetchWords();
+</script>
+
+</body>
+</html>

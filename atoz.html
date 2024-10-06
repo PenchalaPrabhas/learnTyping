@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Type A to Z</title>
+  <link rel="icon" type="jpg" href="new.jpg">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      margin: 0;
+    }
+    #typingArea {
+      border: none;
+      background-color: transparent;
+      color: white;
+      font-size: 24px;
+      outline: none;
+      width: 500px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .line {
+      margin-bottom: 10px;
+    }
+    .wrong {
+      color: red;
+    }
+    .correct {
+      animation: correctColorChange 2s infinite;
+    }
+    @keyframes correctColorChange {
+      0% { color: lightgreen; }
+      50% { color: white; }
+      100% { color: lightgreen; }
+    }
+
+    .case-button {
+      margin: 10px;
+      background: transparent;
+      padding: 10px 20px;
+      border: 2px solid lightgreen;
+      cursor: pointer;
+      color: lightgreen;
+      font-size: 16px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .case-button:hover {
+      background-color: lightgreen;
+      color: black;
+    }
+
+    .ui-btn {
+      position: absolute;
+      top: 170px;
+      right: 160px;
+      cursor: pointer;
+      border-radius: 5px;
+      color: rgb(219, 218, 218);
+      border-style: solid;
+      background-color: transparent;
+      border-color: rgb(219, 218, 218);
+      width: 120px;
+      height: 40px;
+      transition: 0.2s ease;
+      text-transform: uppercase;
+      border-width: 2px;
+      font-weight: 500;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+  .ui-btn:hover {
+  color: rgb(247, 247, 247);
+  background-color: rgb(202, 25, 25);
+  border-color: rgb(202, 25, 25);
+  text-shadow: 0 0 50px white, 0 0 20px white, 0 0 15px white;
+  box-shadow: 0 0 50px rgb(202, 25, 25), 0 0 30px rgb(202, 25, 25),
+    0 0 60px rgb(202, 25, 25), 0 0 120px rgb(202, 25, 25);
+  /* Removed font-size, width, height, and letter-spacing changes */
+}
+
+    .ui-btn:active {
+      width: 115px;
+      height: 38px;
+      letter-spacing: 0px;
+    }
+
+    #content {
+      max-height: 50vh;
+      overflow-y: auto;
+      width: 100%;
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px; /* Added margin to create space */
+    }
+
+    /* New paragraph styles */
+    #instructionText {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <p id="instructionText">You need to type A to Z in uppercase to improve your typing speed and accuracy.</p>
+
+  <!-- Buttons to toggle between cases -->
+  <button id="uppercaseButton" class="case-button" onclick="changeToUppercase()" style="display: none;">Change to Uppercase</button>
+  <button id="lowercaseButton" class="case-button" onclick="changeToLowercase()">Change to Lowercase</button>
+
+  <!-- Paragraph for instructions below buttons -->
+  <!-- Typing Area -->
+  <input id="typingArea" type="text" maxlength="30" placeholder="Type A to Z" autofocus>
+
+  <!-- Home Button with the new UI class -->
+  <button class="ui-btn" onclick="goToCharacterPage()">
+    Home
+  </button>
+
+  <!-- Content for results below -->
+  <div id="content"></div>
+
+  <script>
+    let correctText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ,./';
+    let isUpperCase = true;
+    let startTime, endTime;
+    const typingArea = document.getElementById('typingArea');
+    const contentDiv = document.getElementById('content');
+    const uppercaseButton = document.getElementById('uppercaseButton');
+    const lowercaseButton = document.getElementById('lowercaseButton');
+    const instructionText = document.getElementById('instructionText'); // Reference for instruction text
+
+    // Start the timer when the user starts typing
+    typingArea.addEventListener('input', () => {
+      if (!startTime) {
+        startTime = new Date();
+      }
+    });
+
+    typingArea.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const typedValue = typingArea.value;
+
+        // End the timer when user presses Enter
+        endTime = new Date();
+        const timeDiff = ((endTime - startTime) / 1000).toFixed(2); // Time in seconds
+        startTime = null; // Reset timer for the next input
+
+        const line = document.createElement('div');
+        line.classList.add('line');
+
+        for (let i = 0; i < typedValue.length; i++) {
+          const span = document.createElement('span');
+          span.textContent = typedValue[i];
+
+          if (typedValue[i] !== correctText[i] && isUpperCase) {
+            span.classList.add('wrong');
+          } else if (typedValue[i].toLowerCase() !== correctText[i].toLowerCase() && !isUpperCase) {
+            span.classList.add('wrong');
+          } else {
+            span.classList.add('correct');
+          }
+
+          line.appendChild(span);
+        }
+
+        const timeSpan = document.createElement('span');
+        timeSpan.textContent = ` - Time: ${timeDiff} seconds`;
+        line.appendChild(timeSpan);
+
+        contentDiv.appendChild(line); // Append the line after the input
+        typingArea.value = ''; // Clear the input field
+
+        // Auto scroll to the bottom of the content
+        contentDiv.scrollTop = contentDiv.scrollHeight;
+      }
+    });
+
+    function changeToUppercase() {
+      isUpperCase = true;
+      correctText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ,./';
+      typingArea.placeholder = 'Type A to Z';
+      instructionText.textContent = 'You need to type A to Z in uppercase to improve your typing speed and accuracy.'; // Update instruction
+      uppercaseButton.style.display = 'none';
+      lowercaseButton.style.display = 'inline-block';
+    }
+
+    function changeToLowercase() {
+      isUpperCase = false;
+      correctText = 'abcdefghijklmnopqrstuvwxyz,./';
+      typingArea.placeholder = 'Type a to z';
+      instructionText.textContent = 'You need to type a to z in lowercase to improve your typing speed and accuracy.'; // Update instruction
+      lowercaseButton.style.display = 'none';
+      uppercaseButton.style.display = 'inline-block';
+    }
+
+    function goToCharacterPage() {
+      window.location.href = 'index.html'; // Redirect to character.html
+    }
+  </script>
+
+</body>
+</html>

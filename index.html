@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prabhas typing</title>
+    <link rel="icon" type="jpg" href="new.jpg">
+    <style>
+
+.popup {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+.popup-content {
+    background-color: white;
+    position: relative;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%); /* Center content vertically */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    border-radius: 8px; /* Optional rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+
+.close-btn {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    background-color: #ff6666; /* Light red */
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.close-btn:hover {
+    background-color: #ff3333; /* Brighter red on hover */
+    color: white; /* Keep text white when hovering */
+}
+
+
+    /* Make the background of the whole page black */
+        body {
+            background-color: #000000; /* Black background */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+
+        /* Title style */
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        /* Dropdown container */
+    
+        /* Button style */
+        .ui-btn {
+            cursor: pointer;
+            border-radius: 5px;
+            color: rgb(255, 255, 255); /* White text */
+            border-style: solid;
+            background-color: transparent;
+            border-color: rgb(0, 150, 255); /* Bright blue border */
+            width: 200px; /* Button width */
+            height: 50px; /* Button height */
+            transition: 0.2s ease;
+            text-transform: uppercase;
+            border-width: 2px;
+            font-weight: 500;
+            font-size: 18px;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(0, 150, 255, 0.6); /* Soft blue glow around button */
+        }
+
+        /* Light blue hover effect */
+        .ui-btn:hover {
+            color: #fff; /* White text */
+            background-color: rgb(0, 150, 255); /* Bright blue background */
+            border-color: rgb(0, 150, 255); /* Bright blue border */
+            box-shadow: 0 0 30px rgb(0, 150, 255), 0 0 60px rgb(0, 150, 255); /* Stronger blue glow on hover */
+        }
+
+        /* When dropdown is opened, make the button much brighter */
+        .ui-btn.open {
+            background-color: rgb(0, 150, 255); /* Brighter blue background */
+            box-shadow: 0 0 50px rgb(0, 150, 255), 0 0 80px rgb(0, 150, 255), 0 0 120px rgb(0, 150, 255); /* Super bright blue glow */
+        }
+
+  .paste-button {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 0px; /* Add some space between title and button */
+    align-self: flex-end; /* Align the dropdown to the right of the page */
+    margin-right: 120px; /* Align to the far right */
+}
+
+/* Dropdown content aligned to the right under the button */
+.dropdown-content {
+    display: none;
+    font-size: 13px;
+    position: absolute;
+    z-index: 1;
+    min-width: 200px;
+    background-color: #000000; /* Black background for the dropdown */
+    border: 2px solid rgb(0, 150, 255); /* Bright blue border */
+    border-radius: 0px 15px 15px 15px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.9); /* Stronger shadow */
+    text-align: center; /* Center the dropdown items */
+    right: 0; /* Align dropdown to the right of the button */
+    top: 60px; /* Make sure the dropdown appears below the button */
+}
+
+        /* Show dropdown when hovered */
+        .paste-button:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Dropdown links */
+        .dropdown-content a {
+            color: rgb(0, 150, 255); /* Bright blue links */
+            padding: 10px 10px;
+            text-decoration: none;
+            display: block;
+            transition: 0.3s ease; /* Smooth hover animation */
+            position: relative;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 1px solid rgb(0, 150, 255); /* Bright blue border */
+            font-size: 14px;
+            letter-spacing: 2px;
+            background: transparent;
+        }
+
+        /* Hover effect for dropdown links */
+        .dropdown-content a:hover {
+            background: rgb(0, 150, 255); /* Bright blue background */
+            color: #ffffff; /* White text */
+            text-shadow: 0 0 50px white, 0 0 30px white; /* Increased white glow for brighter effect */
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+ <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2 style="color: #333; font-size: 24px;">Welcome back to Typing Website!</h2>
+            <p style="color: #555; font-size: 18px; margin: 10px 0;">Developed by <b>Penchala Prabhas</b></p>
+            
+            <p style="color: #666; font-size: 16px; margin-top: 10px;">
+                Practice regularly and become a typing pro!
+            </p>
+            <p style="color: #333; font-size: 16px; margin-top: 20px;">
+                Have any suggestions to make this platform better? Feel free to email us at:
+                <a href="mailto:penchalaprabhas@gmail.com" style="color: #007BFF; text-decoration: none;"><b>penchalaprabhas@gmail.com</b></a>
+            </p>
+
+
+
+<button class="close-btn" onclick="closePopup()">Close</button>
+            
+        </div>
+    </div>
+<script>
+        // Show the popup when the page is loaded
+        window.onload = function() {
+            document.getElementById("popup").style.display = "block";
+        };
+
+        // Function to close the popup
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
+
+
+    <h1>Welcome to Typing Website, select an option</h1>
+
+    <div class="paste-button">
+        <!-- Main button that opens the dropdown -->
+        <button class="ui-btn" id="selectOptionBtn">Select Option</button>
+        <div class="dropdown-content" id="myDropdown">
+<a href="beginner.html">Beginner</a>
+            <a href="atoz.html">A to Z</a>
+            
+            <a href="character.html">Random Characters</a>
+
+	<a href="word.html">Words</a>
+<a href="para.html">Paragraph</a>
+           
+ <a href="count.html">1 to 0</a>
+            <a href="randnumber.html">Random Number</a>
+            
+            <a href="symbol.html">Symbols</a>
+        </div>
+    </div>
+
+    <script>
+        // Get references to button and dropdown
+        const selectOptionBtn = document.getElementById("selectOptionBtn");
+        const dropdown = document.getElementById("myDropdown");
+
+        // Track whether the mouse is inside the button or dropdown
+        let insideDropdown = false;
+
+        // Function to show the dropdown
+        function showDropdown() {
+            dropdown.style.display = "block";
+            selectOptionBtn.classList.add("open");
+        }
+
+        // Function to hide the dropdown
+        function hideDropdown() {
+            dropdown.style.display = "none";
+            selectOptionBtn.classList.remove("open");
+        }
+
+        // Show dropdown when mouse enters the button or dropdown
+        selectOptionBtn.addEventListener("mouseenter", () => {
+            insideDropdown = true;
+            showDropdown();
+        });
+
+        dropdown.addEventListener("mouseenter", () => {
+            insideDropdown = true;
+            showDropdown();
+        });
+
+        // Hide dropdown when mouse leaves both the button and dropdown
+        selectOptionBtn.addEventListener("mouseleave", () => {
+            insideDropdown = false;
+            setTimeout(() => {
+                if (!insideDropdown) hideDropdown();
+            }, 200); // Small delay to allow smooth mouse transitions
+        });
+
+        dropdown.addEventListener("mouseleave", () => {
+            insideDropdown = false;
+            setTimeout(() => {
+                if (!insideDropdown) hideDropdown();
+            }, 200); // Small delay to allow smooth mouse transitions
+        });
+
+        // Close dropdown when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.ui-btn') && !event.target.matches('.dropdown-content a')) {
+                hideDropdown();
+            }
+        };
+    </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Keyboard Layout</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1a1a1a;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden; /* Hide overflow to prevent scrollbars */
+            position: relative; /* Position relative for falling keys */
+        }
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            background: linear-gradient(145deg, #3a3a3a, #2d2d2d);
+            padding: 10px;
+            border-radius: 20px;
+            width: 800px;
+            z-index: 1; /* Ensure keyboard is above falling keys */
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin: 5px 0;
+        }
+        .key {
+            width: 60px;
+            height: 60px;
+            background-color: #444;
+            border: 2px solid blue; /* Change the border color to blue */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            color: #fff;
+            font-size: 18px;
+            margin: 0 2px;
+        }
+        .key:hover {
+            background-color: #555;
+            transform: translateY(-3px);
+        }
+        .long-key {
+            width: 120px; /* Normal long key size */
+        }
+        .tab-key {
+            width: 100px; /* Smaller Tab key */
+        }
+        .left-shift {
+            width: 140px; /* Increased width for left Shift key */
+        }
+        .extra-long-key {
+            width: 360px; /* Space bar width */
+        }
+        .right-shift {
+            width: 160px; /* Increased width for right Shift key */
+        }
+
+        /* Staggered layout for rows */
+        .number-row {
+            justify-content: flex-end;
+        }
+        .qwerty-row, .asdf-row, .zxcv-row {
+            justify-content: center;
+        }
+
+        /* Special key styling */
+        .key.gray {
+            background-color: #666;
+        }
+
+        /* Increase size for the ~ key */
+        .key.special {
+            width: 80px; /* Increased width for the `~` key */
+            font-size: 24px; /* Larger font size */
+        }
+
+        /* Punctuation styling */
+        .key span {
+            display: block;
+            text-align: center;
+        }
+
+        /* Blink effect */
+        .blink {
+            background-color: lightblue; /* Light blue glow effect */
+            box-shadow: 0 0 15px lightblue; /* Add a glowing effect */
+            transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+        }
+
+        /* Falling key animation */
+        .falling-key {
+            position: absolute;
+            top: 0; /* Start from the top */
+            font-size: 30px; /* Size of falling key */
+            color: white; /* Color of falling key */
+            animation: fall 1s linear forwards; /* Animation for falling */
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh); /* Fall to the bottom */
+                opacity: 0; /* Fade out */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="keyboard">
+        <!-- Number Row with symbols -->
+        <div class="row number-row">
+            <div class="key special" data-key="192">~</div>
+            <div class="key" data-key="49"><span>1</span><span>!</span></div>
+            <div class="key" data-key="50"><span>2</span><span>@</span></div>
+            <div class="key" data-key="51"><span>3</span><span>#</span></div>
+            <div class="key" data-key="52"><span>4</span><span>$</span></div>
+            <div class="key" data-key="53"><span>5</span><span>%</span></div>
+            <div class="key" data-key="54"><span>6</span><span>^</span></div>
+            <div class="key" data-key="55"><span>7</span><span>&</span></div>
+            <div class="key" data-key="56"><span>8</span><span>*</span></div>
+            <div class="key" data-key="57"><span>9</span><span>(</span></div>
+            <div class="key" data-key="48"><span>0</span><span>)</span></div>
+            <div class="key" data-key="189"><span>-</span><span>_</span></div>
+            <div class="key" data-key="187"><span>=</span><span>+</span></div>
+            <div class="key long-key">Backspace</div>
+        </div>
+        <!-- QWERTY Row -->
+        <div class="row qwerty-row">
+            <div class="key tab-key" data-key="9">Tab</div> <!-- Smaller Tab key -->
+            <div class="key" data-key="81">Q</div>
+            <div class="key" data-key="87">W</div>
+            <div class="key" data-key="69">E</div>
+            <div class="key" data-key="82">R</div>
+            <div class="key" data-key="84">T</div>
+            <div class="key" data-key="89">Y</div>
+            <div class="key" data-key="85">U</div>
+            <div class="key" data-key="73">I</div>
+            <div class="key" data-key="79">O</div>
+            <div class="key" data-key="80">P</div>
+            <div class="key" data-key="219"><span>[</span><span>{</span></div>
+            <div class="key" data-key="221"><span>]</span><span>}</span></div>
+            <div class="key" data-key="220">\|</div>
+        </div>
+        <!-- ASDF Row -->
+        <div class="row asdf-row">
+            <div class="key long-key gray" data-key="20">Caps Lock</div>
+            <div class="key" data-key="65">A</div>
+            <div class="key" data-key="83">S</div>
+            <div class="key" data-key="68">D</div>
+            <div class="key" data-key="70">F</div>
+            <div class="key" data-key="71">G</div>
+            <div class="key" data-key="72">H</div>
+            <div class="key" data-key="74">J</div>
+            <div class="key" data-key="75">K</div>
+            <div class="key" data-key="76">L</div>
+            <div class="key" data-key="186"><span>;</span><span>:</span></div>
+            <div class="key" data-key="222"><span>'</span><span>"</span></div>
+            <div class="key long-key">Enter</div>
+        </div>
+        <!-- ZXCV Row -->
+        <div class="row zxcv-row">
+            <div class="key long-key gray left-shift" data-key="16">Shift</div> <!-- Bigger left Shift key -->
+            <div class="key" data-key="90">Z</div>
+            <div class="key" data-key="88">X</div>
+            <div class="key" data-key="67">C</div>
+            <div class="key" data-key="86">V</div>
+            <div class="key" data-key="66">B</div>
+            <div class="key" data-key="78">N</div>
+            <div class="key" data-key="77">M</div>
+            <div class="key" data-key="188"><span>,</span><span>&lt;</span></div>
+            <div class="key" data-key="190"><span>.</span><span>&gt;</span></div>
+            <div class="key" data-key="191"><span>/</span><span>?</span></div>
+            <div class="key long-key gray right-shift" data-key="16">Shift</div> <!-- Bigger right Shift key -->
+        </div>
+        <!-- Bottom Row -->
+        <div class="row">
+            <div class="key long-key gray">Ctrl</div>
+            <div class="key long-key gray">Windows</div>
+            <div class="key long-key gray">Alt</div>
+            <div class="key extra-long-key">Space</div>
+            <div class="key long-key gray">Alt</div>
+            <div class="key long-key gray">Windows</div>
+            <div class="key long-key gray">Menu</div>
+            <div class="key long-key gray">Ctrl</div>
+        </div>
+    </div>
+
+    <script>
+        const keys = document.querySelectorAll('.key');
+
+        // Add keydown event listener for keyboard input
+        document.addEventListener('keydown', (event) => {
+            const pressedKey = Array.from(keys).find(key => key.dataset.key == event.keyCode); // Use keyCode instead of key
+            if (pressedKey) {
+                blinkKey(pressedKey);
+                createFallingKey(event.key); // Create falling key using the pressed key's character
+            }
+        });
+
+        // Function to apply blink effect
+        function blinkKey(key) {
+            key.classList.add('blink');
+            setTimeout(() => {
+                key.classList.remove('blink');
+            }, 300); // Duration of the blink effect
+        }
+
+        // Function to create falling key effect
+        function createFallingKey(char) {
+            const fallingKey = document.createElement('div');
+            fallingKey.textContent = char;
+            fallingKey.classList.add('falling-key');
+            // Random horizontal position
+            const randomX = Math.random() * (window.innerWidth - 60); // Adjust based on key width
+            fallingKey.style.left = randomX + 'px';
+
+            document.body.appendChild(fallingKey);
+
+            // Remove the falling key after the animation ends
+            fallingKey.addEventListener('animationend', () => {
+                fallingKey.remove();
+            });
+        }
+    </script>
+    <p style="text-align: center; margin-bottom: 0;">Type Anything</p>
+    <p style="color: red; font-weight: bold; text-align: center; margin-top: 0;">Note: You can learn step by step by selecting each option in sequence,</p>
+    
+</body>
+</html>
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="jpg" href="new.jpg">
+    <title>Typing Paragraph</title>
+   <style>
+    body {
+        font-family: Arial, sans-serif;
+        background: black;
+        color: white;
+        text-align: center;
+        padding: 50px;
+    }
+
+    /* Add glow effect to all text */
+    h1, p, button, th, td, #wpmDisplay, #wordContainer {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+
+    #wordContainer {
+        font-size: 26px;
+        margin: 20px;
+        padding: 20px; /* Increased padding for better spacing */
+        border: 2px solid #fff;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.1);
+        display: inline-block;
+        width: 80%; /* Increased width for a larger display area */
+        height: 90px; /* Set a fixed height for the container */
+        overflow: hidden; /* Hide overflow if the content exceeds */
+    }
+
+    span {
+        color: #fff; /* Moderate gray for untyped characters */
+    }
+
+    .correct {
+        color: rgba(144, 238, 144, 1);
+        font-weight: bold;
+    }
+
+    .incorrect {
+        color: rgba(255, 204, 204, 1);
+    }
+
+    .untouched {
+        color: #fff; /* Moderate gray for untouched letters */
+    }
+
+    .controls {
+        margin-top: 20px;
+    }
+
+    button {
+        font-size: 18px;
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #changeParaBtn {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    #pauseBtn {
+        background-color: #f44336;
+        color: white;
+    }
+
+    table {
+        margin: 20px auto;
+        border-collapse: collapse;
+        width: 70%; /* Increased table width */
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    /* Home button styling: red background, black text, and glow effect */
+#homeBtn {
+            position: absolute; /* Positioning it in the top right */
+            top: 100px; /* Adjusted top position */
+            right: 160px; /* Adjusted right position */
+            cursor: pointer;
+            border-radius: 5px;
+            color: rgb(219, 218, 218);
+            border-style: solid;
+            background-color: transparent;
+            border-color: rgb(219, 218, 218);
+            width: 120px;
+            height: 40px;
+            transition: 0.2s ease;
+            text-transform: uppercase;
+            border-width: 2px;
+            font-weight: 500;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        #homeBtn:hover {
+            color: rgb(247, 247, 247);
+            background-color: rgb(202, 25, 25);
+            border-color: rgb(202, 25, 25);
+            text-shadow: 0 0 50px white, 0 0 20px white, 0 0 15px white;
+            box-shadow: 0 0 50px rgb(202, 25, 25), 0 0 30px rgb(202, 25, 25),
+                0 0 60px rgb(202, 25, 25), 0 0 120px rgb(202, 25, 25);
+            font-size: 20px;
+            width: 120px;
+            height: 40px;
+            letter-spacing: 3px;
+        }
+
+        #homeBtn:active {
+            width: 115px;
+            height: 38px;
+            letter-spacing: 0px;
+        }
+
+
+    /* Glowing effect for all buttons */
+    button {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+</style>
+
+</head>
+<body>
+    <button id="homeBtn" onclick="location.href='index.html'">Home</button>
+    <h1 style="color: #fff;">Typing Test</h1>
+    <div id="wordContainer">Loading...</div>
+    <div id="wpmDisplay">WPM: 0 | Accuracy: 100%</div>
+
+    <div class="controls">
+        <button id="changeParaBtn">Change Paragraph</button>
+        <button id="pauseBtn">Pause</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Paragraph</th>
+                <th>WPM</th>
+                <th>Accuracy</th>
+                <th>Time Taken (seconds)</th>
+            </tr>
+        </thead>
+        <tbody id="resultTableBody">
+            <!-- Rows of results will be added here dynamically -->
+        </tbody>
+    </table>
+
+    <script>
+        const wordContainer = document.getElementById('wordContainer');
+        const wpmDisplay = document.getElementById('wpmDisplay');
+        const changeParaBtn = document.getElementById('changeParaBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resultTableBody = document.getElementById('resultTableBody');
+
+        let words = [];
+        let currentWordIndex = 0;
+        let correctChars = 0;
+        let totalTypedChars = 0;
+        let startTime;
+        let paused = false;
+
+        // Fetch 16 random words and display them (8 above, 8 below)
+        function fetchNewParagraph() {
+            fetch('https://random-word-api.herokuapp.com/word?number=16')
+                .then(response => response.json())
+                .then(data => {
+                    words = data.join(' '); // Combine words into a single string
+                    displayWords();
+                    resetStats();
+                });
+        }
+
+        function displayWords() {
+            const wordsArray = words.split(' ');
+            const upperPart = wordsArray.slice(0, 8).join(' '); // First 8 words
+            const lowerPart = wordsArray.slice(8).join(' '); // Next 8 words
+
+            wordContainer.innerHTML = `
+                <div>${upperPart.split('').map((char) => `<span class="untouched">${char}</span>`).join('')}</div>
+                <div>${lowerPart.split('').map((char) => `<span class="untouched">${char}</span>`).join('')}</div>
+            `;
+
+            currentWordIndex = 0;
+            startTime = new Date();
+            updateDisplay();
+        }
+
+        function resetStats() {
+            correctChars = 0;
+            totalTypedChars = 0;
+            updateWPM(0); // Ensure WPM starts from 0
+            wpmDisplay.innerText = `WPM: 0 | Accuracy: 100%`;
+        }
+
+        // Initial load
+        fetchNewParagraph();
+
+        // Listen for keystrokes
+        document.addEventListener('keypress', (event) => {
+            if (paused) return; // Do nothing if paused
+
+            const typedChar = event.key;
+            const charSpans = wordContainer.getElementsByTagName('span');
+
+            totalTypedChars++;
+
+            // Check if the typed character matches the current one
+            if (typedChar === charSpans[currentWordIndex].innerText) {
+                charSpans[currentWordIndex].classList.add('correct');
+                charSpans[currentWordIndex].classList.remove('untouched');
+                currentWordIndex++;
+                correctChars++;
+            } else {
+                charSpans[currentWordIndex].classList.add('incorrect');
+                charSpans[currentWordIndex].classList.remove('untouched');
+            }
+
+            // Continue only when the character is typed correctly
+            if (currentWordIndex === charSpans.length) {
+                updateStats(); // Update WPM and accuracy when done
+                addRowToTable(); // Add the completed data to the table
+                fetchNewParagraph(); // Fetch a new paragraph
+            } else {
+                updateDisplay(); // Update WPM and accuracy after each character
+            }
+        });
+
+        // Change Paragraph button
+        changeParaBtn.addEventListener('click', fetchNewParagraph);
+
+        // Pause button functionality
+        pauseBtn.addEventListener('click', () => {
+            paused = !paused;
+            pauseBtn.innerText = paused ? 'Resume' : 'Pause';
+        });
+
+        function updateStats() {
+            const elapsedTime = Math.round((new Date() - startTime) / 1000); // Convert ms to seconds
+            const wpm = updateWPM(elapsedTime);
+            const accuracy = ((correctChars / totalTypedChars) * 100).toFixed(2);
+            wpmDisplay.innerText = `WPM: ${wpm} | Accuracy: ${accuracy}%`;
+        }
+
+        function updateWPM(elapsedTime) {
+            if (elapsedTime === 0) return 0; // Avoid division by zero
+            const wordsTyped = words.length / 5; // Approximation: 5 chars = 1 word
+            const wpm = Math.round((wordsTyped / (elapsedTime / 60))); // Convert seconds to minutes
+            return wpm || 0; // Ensure no negative or invalid WPM
+        }
+
+        function updateDisplay() {
+            const elapsedTime = Math.round((new Date() - startTime) / 1000); // Get elapsed time in seconds
+            const wpm = updateWPM(elapsedTime);
+            const accuracy = ((correctChars / totalTypedChars) * 100).toFixed(2);
+            wpmDisplay.innerText = `WPM: ${wpm} | Accuracy: ${accuracy}%`;
+        }
+
+        function addRowToTable() {
+            const elapsedTime = Math.round((new Date() - startTime) / 1000); // Get elapsed time in seconds
+            const wpm = updateWPM(elapsedTime);
+            const accuracy = ((correctChars / totalTypedChars) * 100).toFixed(2);
+            const newRow = `
+                <tr>
+                    <td>${words}</td>
+                    <td>${wpm}</td>
+                    <td>${accuracy}%</td>
+                    <td>${elapsedTime}</td>
+                </tr>
+            `;
+            resultTableBody.insertAdjacentHTML('beforeend', newRow);
+        }
+    </script>
+</body>
+</html>

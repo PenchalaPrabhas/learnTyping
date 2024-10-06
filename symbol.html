@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symbol Typing</title>
+    <link rel="icon" type="jpg" href="new.jpg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #000000; /* Background color changed to black */
+            color: #ffffff; /* Text color changed to white */
+        }
+        .container {
+            text-align: center;
+        }
+        .symbols {
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(16, 40px); /* Adjusted to fit 16 symbols */
+            gap: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+        .output {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        h2, h3 {
+            margin: 10px;
+        }
+        .row-label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        /* Styles for checkboxes' labels */
+        label.checkbox-enabled {
+            background-color: green;
+            padding: 5px;
+            border-radius: 4px;
+            color: white;
+        }
+        label.checkbox-disabled {
+            background-color: red;
+            padding: 5px;
+            border-radius: 4px;
+            color: white;
+        }
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        /* Align 2nd, 3rd, and 4th rows to the right */
+        .align-right {
+            justify-content: right;
+            display: flex;
+        }
+
+        /* Uiverse button styling */
+        .ui-btn {
+    position: absolute; /* Ensure button is positioned absolutely */
+    top: 160px; /* Moves the button 160px from the top */
+    right: 160px; /* Keeps the button 10px from the right */
+    cursor: pointer;
+    border-radius: 5px;
+    color: rgb(219, 218, 218);
+    border-style: solid;
+    background-color: transparent;
+    border-color: rgb(219, 218, 218);
+    width: 120px;
+    height: 40px;
+    transition: 0.2s ease;
+    text-transform: uppercase;
+    border-width: 2px;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-bottom: 20px; /* Added margin for spacing */
+}
+
+.ui-btn:hover {
+    color: rgb(247, 247, 247);
+    background-color: rgb(202, 25, 25);
+    border-color: rgb(202, 25, 25);
+    text-shadow: 0 0 50px white, 0 0 20px white, 0 0 15px white;
+    box-shadow: 0 0 50px rgb(202, 25, 25), 0 0 30px rgb(202, 25, 25),
+        0 0 60px rgb(202, 25, 25), 0 0 120px rgb(202, 25, 25);
+    font-size: 20px;
+    width: 120px;
+    height: 40px;
+    letter-spacing: 3px;
+}
+
+.ui-btn:active {
+    width: 120px;
+    height: 40px;
+    letter-spacing: 0px;
+}
+
+
+        button {
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 7px;
+            border: 1px solid rgb(61, 106, 255);
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 2px;
+            background: transparent;
+            color: #fff;
+            overflow: hidden;
+            box-shadow: 0 0 0 0 transparent;
+            transition: all 0.2s ease-in;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: rgb(61, 106, 255);
+            box-shadow: 0 0 30px 5px rgba(0, 142, 236, 0.815);
+            transition: all 0.2s ease-out;
+        }
+
+        button:hover::before {
+            animation: sh02 0.5s 0s linear;
+        }
+
+        button::before {
+            content: '';
+            display: block;
+            width: 0px;
+            height: 86%;
+            position: absolute;
+            top: 7%;
+            left: 0%;
+            opacity: 0;
+            background: #fff;
+            box-shadow: 0 0 50px 30px #fff;
+            transform: skewX(-20deg);
+        }
+
+        @keyframes sh02 {
+            from {
+                opacity: 0;
+                left: 0%;
+            }
+            50% {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                left: 100%;
+            }
+        }
+
+        button:active {
+            box-shadow: 0 0 0 0 transparent;
+            transition: box-shadow 0.2s ease-in;
+        }
+    </style>
+</head>
+<body>
+<button class="ui-btn" onclick="window.location.href='index.html'">Home</button>
+    <div class="container">
+        <!-- Home Button -->
+        
+
+        <h1>Choose Symbols to Generate & Type</h1>
+
+        <!-- Shift and Numbers Checkboxes -->
+        <div>
+            <label><input type="checkbox" id="shift-checkbox" onclick="toggleShift()"> Shift</label>
+            <label><input type="checkbox" id="numbers-checkbox" onclick="toggleNumbers()"> Number</label>
+        </div>
+
+        <!-- Number row -->
+        <div class="row-label">1st Row (Number Row)</div>
+        <div class="symbols">
+            <label class="checkbox-disabled"><input type="checkbox" class="number-symbol" value="!" disabled /> !</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="number-symbol" value="@" disabled /> @</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="number-symbol" value="#" disabled /> #</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="number-symbol" value="$" disabled /> $</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="number-symbol" value="%" disabled /> %</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="number-symbol" value="^" disabled /> ^</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="number-symbol" value="&" disabled /> &</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="number-symbol" value="*" disabled /> *</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="number-symbol" value="(" disabled /> (</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="number-symbol" value=")" disabled /> )</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="shift-symbol" value="_" disabled /> _</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="shift-symbol" value="+" disabled /> +</label>
+            <label><input type="checkbox" value="-" /> -</label>
+            <label><input type="checkbox" value="=" /> =</label>
+        </div>
+
+        <!-- Top row -->
+        <div class="row-label">2nd Row (Top Row)</div>
+        <div class="symbols align-right">
+            <label class="checkbox-disabled"><input type="checkbox" class="shift-symbol" value="{" disabled /> {</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="shift-symbol" value="}" disabled /> }</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="shift-symbol" value="|" disabled /> |</label>
+            <label><input type="checkbox" value="[" /> [</label>
+            <label><input type="checkbox" value="]" /> ]</label>
+            <label><input type="checkbox" value="\\" /> \</label>
+        </div>
+
+        <!-- Home row -->
+        <div class="row-label">3rd Row (Home Row)</div>
+        <div class="symbols align-right">
+            <label class="checkbox-disabled"><input type="checkbox" class="shift-symbol" value=":" disabled /> :</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="shift-symbol" value='"' disabled /> "</label>
+            <label><input type="checkbox" value=";" /> ;</label>
+            <label><input type="checkbox" value="'" /> '</label>
+        </div>
+
+        <!-- Bottom row -->
+        <div class="row-label">4th Row (Bottom Row)</div>
+        <div class="symbols align-right">
+            <label class="checkbox-disabled"><input type="checkbox" class="shift-symbol" value="<" disabled /> <</label>
+            <label class="checkbox-disabled"><input type="checkbox" class="shift-symbol" value=">" disabled /> ></label>
+            <label class="checkbox-disabled"><input type="checkbox" class="shift-symbol" value="?" disabled /> ?</label>
+            <label><input type="checkbox" value="," /> ,</label>
+            <label><input type="checkbox" value="." /> .</label>
+            <label><input type="checkbox" value="/" /> /</label>
+        </div>
+
+        <button onclick="generateRandomSymbols()">Generate Random Symbols</button>
+
+        <h2 class="hidden">Type the Symbol:</h2>
+        <div id="current-symbol" class="output hidden"></div>
+
+        <h3 class="hidden">Symbols Typed Correctly: <span id="correct-count">0</span></h3>
+        <div id="typed-output" class="output hidden"></div>
+    </div>
+
+    <script>
+        let generatedSymbols = '';
+        let currentSymbolIndex = 0;
+        let correctCount = 0;
+        let maxSymbols = 100; // Number of symbols generated in one batch
+
+        function toggleShift() {
+            const shiftChecked = document.getElementById("shift-checkbox").checked;
+            const shiftSymbols = document.querySelectorAll('.shift-symbol');
+
+            shiftSymbols.forEach(symbol => {
+                symbol.disabled = !shiftChecked;
+                symbol.checked = false; // Uncheck if disabled
+                updateLabelStyle(symbol);
+            });
+        }
+
+        function toggleNumbers() {
+            const numbersChecked = document.getElementById("numbers-checkbox").checked;
+            const numberSymbols = document.querySelectorAll('.number-symbol');
+
+            numberSymbols.forEach(symbol => {
+                symbol.disabled = !numbersChecked;
+                symbol.checked = false; // Uncheck if disabled
+                updateLabelStyle(symbol);
+            });
+        }
+
+        function updateLabelStyle(checkbox) {
+            const label = checkbox.parentElement; // Get the parent label of the checkbox
+            if (checkbox.disabled) {
+                label.classList.remove('checkbox-enabled');
+                label.classList.add('checkbox-disabled');
+            } else {
+                label.classList.remove('checkbox-disabled');
+                label.classList.add('checkbox-enabled');
+            }
+        }
+
+        function generateRandomSymbols() {
+            const checkboxes = document.querySelectorAll('.symbols input[type="checkbox"]:checked');
+            const selectedSymbols = Array.from(checkboxes).map(cb => cb.value);
+            
+            if (selectedSymbols.length === 0) {
+                alert("Please select at least one symbol.");
+                return;
+            }
+
+            // Generate a sequence of random symbols
+            generatedSymbols = '';
+            for (let i = 0; i < maxSymbols; i++) {
+                const randomIndex = Math.floor(Math.random() * selectedSymbols.length);
+                generatedSymbols += selectedSymbols[randomIndex];
+            }
+
+            // Display the first symbol
+            currentSymbolIndex = 0;
+            correctCount = 0;
+            document.getElementById('correct-count').textContent = correctCount;
+            document.querySelector('h2').classList.remove('hidden');
+            document.querySelector('h3').classList.remove('hidden');
+            document.getElementById('current-symbol').textContent = generatedSymbols[currentSymbolIndex];
+            document.getElementById('current-symbol').classList.remove('hidden');
+            document.getElementById('typed-output').textContent = '';
+            document.getElementById('typed-output').classList.remove('hidden');
+
+            // Listen for key presses
+            document.addEventListener('keydown', handleTyping);
+        }
+
+        function handleTyping(event) {
+            const symbol = event.key;
+            // Check if the typed key matches the current symbol
+            if (symbol === generatedSymbols[currentSymbolIndex]) {
+                correctCount++;
+                document.getElementById('correct-count').textContent = correctCount;
+
+                // Move to the next symbol
+                currentSymbolIndex++;
+                if (currentSymbolIndex < generatedSymbols.length) {
+                    document.getElementById('current-symbol').textContent = generatedSymbols[currentSymbolIndex];
+                } else {
+                    document.getElementById('current-symbol').textContent = "Well done! All symbols typed.";
+                    document.removeEventListener('keydown', handleTyping);
+                }
+            }
+        }
+
+        // Update initial checkbox styles on page load
+        document.querySelectorAll('.symbols input[type="checkbox"]').forEach(updateLabelStyle);
+    </script>
+</body>
+</html>
